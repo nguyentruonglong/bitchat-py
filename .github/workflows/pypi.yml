@@ -1,0 +1,49 @@
+name: PyPI Publish
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8', '3.9']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Verify Poetry configuration
+        run: |
+          if [ ! -f "poetry.lock" ]; then
+            echo "poetry.lock not found!"
+            exit 1
+          fi
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}-python-${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install
+      - name: Run tests
+        run: poetry run pytest tests/ --cov --cov-report=xml
+      - name: Build package
+        run: poetry build
+      - name: Verify build artifacts
+        run: |
+          ls -lh dist/
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
+            echo "No build artifacts found in dist/!"
+            exit 1
+          fi
+      - name: Publish to PyPI
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: poetry publish --build -u __token__ -p ${{ secrets.PYPI_TOKEN }}

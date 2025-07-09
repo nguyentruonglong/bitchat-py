@@ -1,0 +1,33 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "bitchat"
+version = "1.0.0"
+description = "Python implementation of the bitchat mesh networking protocol"
+authors = ["Nguyen Truong Long <nguyentruonglongdev@gmail.com>"]
+license = "Unlicense"
+readme = "README.md"
+homepage = "https://github.com/nguyentruonglong/bitchat-py"
+repository = "https://github.com/nguyentruonglong/bitchat-py"
+keywords = ["bitchat", "mesh-networking", "ble", "encryption"]
+packages = [{include = "bitchat"}]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+bleak = "^0.20.2"
+cryptography = "^42.0.5"
+pybloom-live = "^4.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.0"
+pytest-asyncio = "^0.18.1"
+pytest-cov = "^4.1.0"
+sphinx = "^5.3.0"
+sphinx-rtd-theme = "^2.0.0"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+python_files = "test_*.py"
+testpaths = ["tests"]

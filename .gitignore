@@ -1,0 +1,35 @@
+# Python-specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+*.whl
+*.tar.gz
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Documentation build files
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Secrets
+.env
+*.secret
+*.key
+*.pem
+
+# IDE and temporary files
+.DS_Store
+*.swp
+*.bak
+.vscode/
+.idea/
